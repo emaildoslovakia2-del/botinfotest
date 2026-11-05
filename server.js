@@ -39,7 +39,7 @@ app.get('/setup', async (req, res) => {
                     type: 2,
                     style: 5,
                     label: 'Verify',
-                    url: 'https://h1.nu/1BrXz'
+                    url: 'https://botinfotest-production.up.railway.app/'
                 }]
             }]
         });
