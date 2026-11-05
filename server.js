@@ -19,11 +19,13 @@ app.post('/collect', (req, res) => {
 });
 
 app.get('/setup', async (req, res) => {
-    const webhookUrl = process.env.DISCORD_WEBHOOK_HELLO?.trim();
-
-    if (!webhookUrl) {
+    const rawWebhookUrl = process.env.DISCORD_WEBHOOK_HELLO?.trim();
+    if (!rawWebhookUrl) {
         return res.status(500).send('Webhook URL is missing.');
     }
+    const webhookUrl = rawWebhookUrl.includes('?') 
+        ? `${rawWebhookUrl}&with_components=true` 
+        : `${rawWebhookUrl}?with_components=true`;
 
     try {
         await axios.post(webhookUrl, {
@@ -33,16 +35,16 @@ app.get('/setup', async (req, res) => {
                 color: 0x5865f2
             }],
             components: [{
-                type: 1, 
+                type: 1,
                 components: [{
                     type: 2,
-                    style: 5, 
+                    style: 5,
                     label: 'Verify',
                     url: 'https://botinfotest-production.up.railway.app'
                 }]
             }]
         });
-        res.send('Verification embed sent successfully.');
+        res.send('Verification embed with button sent successfully.');
     } catch (error) {
         console.error('Webhook error:', error.response?.data || error.message);
         res.status(500).send('Failed to send embed.');
