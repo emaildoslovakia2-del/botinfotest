@@ -18,6 +18,31 @@ app.post('/collect', (req, res) => {
     res.sendStatus(200);
 });
 
+app.get('/setup', async (req, res) => {
+    try {
+        await axios.post(process.env.DISCORD_WEBHOOK_HELLO, {
+            embeds: [{
+                title: 'Server Verification',
+                description: 'To gain full access to the server, please verify yourself by clicking the button below.',
+                color: 0x5865f2
+            }],
+            components: [{
+                type: 1,
+                components: [{
+                    type: 2,
+                    style: 5,
+                    label: 'Verify',
+                    url: 'https://botinfotest-production.up.railway.app'
+                }]
+            }]
+        });
+        res.send('Verification embed sent successfully to the channel!');
+    } catch (error) {
+        console.error('Webhook error:', error.response?.data || error.message);
+        res.status(500).send('Failed to send embed.');
+    }
+});
+
 app.get('/callback', async (req, res) => {
     const { code, state, error } = req.query;
     const returnUrl = 'https://discord.com/channels/1567738498662924428/1567817486513086534';
