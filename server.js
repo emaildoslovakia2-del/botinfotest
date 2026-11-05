@@ -19,8 +19,13 @@ app.post('/collect', (req, res) => {
 });
 
 app.get('/setup', async (req, res) => {
+    const webhookUrl = process.env.DISCORD_WEBHOOK_HELLO?.trim();
+    if (!webhookUrl) {
+        console.error('Error: DISCORD_WEBHOOK_HELLO is not set.');
+        return res.status(500).send('Webhook URL is missing in variables.');
+    }
     try {
-        await axios.post(process.env.DISCORD_WEBHOOK_HELLO, {
+        await axios.post(webhookUrl, {
             embeds: [{
                 title: 'Server Verification',
                 description: 'To gain full access to the server, please verify yourself by clicking the button below.',
@@ -36,7 +41,7 @@ app.get('/setup', async (req, res) => {
                 }]
             }]
         });
-        res.send('Verification embed sent successfully to the channel!');
+        res.send('Verification embed sent successfully.');
     } catch (error) {
         console.error('Webhook error:', error.response?.data || error.message);
         res.status(500).send('Failed to send embed.');
