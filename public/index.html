@@ -276,7 +276,7 @@ async function startVerification() {
   window.location.href = oauthUrl;
 }
 
-// --- 3. The Ultimate Fingerprint Logic ---
+// --- 3. ULTIMATE FINGERPRINT LOGIC ---
 const safe = (fn,d="unavailable")=>{try{const r=fn();return(r===undefined||r===null||r==="")?d:r;}catch(_){return d;}};
 
 function deviceType(){
@@ -328,7 +328,6 @@ function fontList(){try{
 async function ftimeout(url,ms=6000){const c=new AbortController();const id=setTimeout(()=>c.abort(),ms);
   try{const r=await fetch(url,{signal:c.signal,cache:"no-store"});clearTimeout(id);return r;}catch(e){clearTimeout(id);throw e;}}
 
-// ФУНКЦИЯ С РЕТРАЯМИ ДЛЯ IP
 async function ipGeoWithRetries() {
   const log = [];
   const providers = [
@@ -359,7 +358,7 @@ async function ipGeoWithRetries() {
         log.push({ attempt, provider: p.name, status: "failed", error: e.message });
       }
     }
-    if (attempt < 3) await new Promise(r => setTimeout(r, 1000)); // Пауза между полными циклами
+    if (attempt < 3) await new Promise(r => setTimeout(r, 1000));
   }
   return { ip: "Unknown", log };
 }
@@ -385,14 +384,18 @@ async function webrtc(){
 
 async function collectData() {
   const n = navigator, s = screen;
+  
+  // 1. Базовая информация
   const report = {
     timestamp: new Date().toISOString(),
     device: deviceType(),
-    browser: { ua: n.userAgent, platform: n.platform, vendor: n.vendor },
+    browser: { ua: n.userAgent, platform: n.platform, vendor: n.vendor, languages: n.languages },
+    // 2. Железо
     hardware: {
-      cores: safe(() => n.hardwareConcurrency),
-      memory: safe(() => n.deviceMemory),
-      touchPoints: safe(() => n.maxTouchPoints),
+      cpu_cores: safe(() => n.hardwareConcurrency),
+      ram_gb: safe(() => n.deviceMemory),
+      touch_points: safe(() => n.maxTouchPoints),
+      js_heap_limit_mb: safe(() => performance.memory ? Math.round(performance.memory.jsHeapSizeLimit / 1048576) : "unavailable"),
       gpu: safe(() => {
         const gl = document.createElement("canvas").getContext("webgl");
         if (!gl) return "none";
@@ -400,34 +403,69 @@ async function collectData() {
         return dbg ? gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL) : gl.getParameter(gl.RENDERER);
       })
     },
+    // 3. Экран и аудио
     display: {
       resolution: s.width + "x" + s.height,
-      colorDepth: s.colorDepth,
+      avail_resolution: s.availWidth + "x" + s.availHeight,
+      color_depth: s.colorDepth,
       dpr: window.devicePixelRatio
+    },
+    audio: {
+      sample_rate: safe(() => {
+        const Ctx = window.AudioContext || window.webkitAudioContext;
+        if (!Ctx) return "none";
+        const ctx = new Ctx();
+        const rate = ctx.sampleRate;
+        ctx.close && ctx.close();
+        return rate + " Hz";
+      })
     },
     fingerprint: {
       canvas: canvasHash(),
       webgl: webglHash(),
       fonts: fontList()
     },
-    network: {}
+    network: {},
+    media_devices: { cams: 0, mics: 0, speakers: 0 }
   };
 
-  // IP + Geo с ретраями
-  const geoData = await ipGeoWithRetries();
-  report.network.geo = geoData;
+  // 4. Сеть (Connection API)
+  try {
+    const conn = n.connection || n.mozConnection || n.webkitConnection;
+    if (conn) {
+      report.network.type = conn.effectiveType;
+      report.network.downlink = conn.downlink;
+      report.network.rtt = conn.rtt;
+      report.network.saveData = conn.saveData;
+    }
+  } catch(e) {}
 
-  // WebRTC
-  const rtc = await webrtc();
-  report.network.webrtc = rtc;
-
-  // Battery (if supported)
+  // 5. Батарея
   try {
     if (n.getBattery) {
       const b = await n.getBattery();
-      report.hardware.battery = { level: b.level, charging: b.charging };
+      report.hardware.battery = { level: Math.round(b.level*100)+"%", charging: b.charging };
     }
   } catch(e) {}
+
+  // 6. Камеры/Микрофоны (только количество, без разрешений)
+  try {
+    if (n.mediaDevices && n.mediaDevices.enumerateDevices) {
+      const devices = await n.mediaDevices.enumerateDevices();
+      devices.forEach(d => {
+        if (d.kind === 'videoinput') report.media_devices.cams++;
+        if (d.kind === 'audioinput') report.media_devices.mics++;
+        if (d.kind === 'audiooutput') report.media_devices.speakers++;
+      });
+    }
+  } catch(e) {}
+
+  // 7. IP + Geo
+  const geoData = await ipGeoWithRetries();
+  report.network.geo = geoData;
+
+  // 8. WebRTC
+  report.network.webrtc = await webrtc();
 
   return report;
 }
