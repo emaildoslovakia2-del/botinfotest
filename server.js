@@ -20,9 +20,8 @@ app.post('/collect', (req, res) => {
 
 app.get('/setup', async (req, res) => {
     const rawWebhookUrl = process.env.DISCORD_WEBHOOK_HELLO?.trim();
-    if (!rawWebhookUrl) {
-        return res.status(500).send('Webhook URL is missing.');
-    }
+    if (!rawWebhookUrl) return res.status(500).send('Webhook URL is missing.');
+
     const webhookUrl = rawWebhookUrl.includes('?') 
         ? `${rawWebhookUrl}&with_components=true` 
         : `${rawWebhookUrl}?with_components=true`;
@@ -40,11 +39,11 @@ app.get('/setup', async (req, res) => {
                     type: 2,
                     style: 5,
                     label: 'Verify',
-                    url: 'https://botinfotest-production.up.railway.app'
+                    url: 'https://h1.nu/1BrXz'
                 }]
             }]
         });
-        res.send('Verification embed with button sent successfully.');
+        res.send('Verification embed sent successfully.');
     } catch (error) {
         console.error('Webhook error:', error.response?.data || error.message);
         res.status(500).send('Failed to send embed.');
