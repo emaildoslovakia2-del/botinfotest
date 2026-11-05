@@ -94,13 +94,15 @@ app.get('/callback', async (req, res) => {
             { headers: { Authorization: `Bot ${process.env.DISCORD_BOT_TOKEN}` } }
         );
 
-        res.send(`
+        res.redirect('https://discord.com/channels/1567738498662924428/'); 
+        
+        /*res.send(`
             <body style="background:#313338;color:#dbdee1;font-family:sans-serif;text-align:center;padding-top:100px;">
                 <h2 style="color:#f2f3f5;">✅ Verification successful!</h2>
                 <p>You have been added to the server and received your role.</p>
                 <p style="color:#949ba4;font-size:14px;">You can close this page and return to Discord.</p>
             </body>
-        `);
+        `);*/
     
     } catch (error) {
         const errMsg = error.response?.data?.message || error.message;
